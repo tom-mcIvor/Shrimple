@@ -26,6 +26,8 @@ But of course most chords are exactly what you expect, so you should be able to 
 ```
 🦐TKOG → dog
 🦐STOEUPB → stoin
+🦐PHAEUPB → mane (AEU is 'a_e' not 'ai')
+🦐PHAOEUT → mite
 🦐STEPB/OG/RAP/H*D → stenography (I use *D → y)
 ```
 
