@@ -19,7 +19,7 @@ entry_strokes={
 make_starter_letters_have_left_to_right_priority = True
 user_definitions={
     "" : "",
-    
+
     "F": "f",
     "FC": "h",
     "FZ": "j",
@@ -299,43 +299,165 @@ with open("MichelaShrimple.json", "w") as outfile:
 
 
 
-def construct_stroke(target_chord, chord_dictionary, memo={}):
+def construct_stroke(target_chord, chord_dictionary):
     """
     Construct a stroke for a target chord using a dictionary of known chord definitions.
 
     Args:
         target_chord (str): The target chord to construct a stroke for.
         chord_dictionary (dict): A dictionary of known chord definitions.
-        memo (dict): A dictionary to store intermediate results for memoization (default: {}).
 
     Returns:
         str: The constructed stroke for the target chord.
     """
 
-    # Base case: If the target chord is in the dictionary, return its definition
+    # When the target chord is in the dictionary
     if target_chord in chord_dictionary:
         return chord_dictionary[target_chord]
 
-    # Base case: If the target chord is empty, return an empty string
-    if not target_chord:
-        return ""
+    # When the target chord is made of two definitions that are in the dictionary
+    for split_location in range(1, len(target_chord)):
+        first_half = target_chord[:split_location]
+        second_half = target_chord[split_location:]
+        if first_half in chord_dictionary and second_half in chord_dictionary:
+            return chord_dictionary[first_half] + chord_dictionary[second_half]
 
-    # If the result is already in the memo, return it
-    if target_chord in memo:
-        return memo[target_chord]
+    # When the target chord is made of three definitions that are in the dictionary
+    for split_location1 in range(1, len(target_chord)):
+        for split_location2 in range(split_location1 + 1, len(target_chord)):
+            first_half = target_chord[:split_location1]
+            middle = target_chord[split_location1:split_location2]
+            second_half = target_chord[split_location2:]
+            if first_half in chord_dictionary and middle in chord_dictionary and second_half in chord_dictionary:
+                return chord_dictionary[first_half] + chord_dictionary[middle] + chord_dictionary[second_half]
 
-    # Try to find a split point in the target chord
-    for i in range(1, len(target_chord)):
-        first_half = target_chord[:i]
-        second_half = target_chord[i:]
+    # When the target chord is made of four definitions that are in the dictionary
+    for split_location1 in range(1, len(target_chord)):
+        for split_location2 in range(split_location1 + 1, len(target_chord)):
+            for split_location3 in range(split_location2 + 1, len(target_chord)):
+                first_half = target_chord[:split_location1]
+                second_half = target_chord[split_location1:split_location2]
+                third_half = target_chord[split_location2:split_location3]
+                fourth_half = target_chord[split_location3:]
+                if (first_half in chord_dictionary and second_half in chord_dictionary and 
+                    third_half in chord_dictionary and fourth_half in chord_dictionary):
+                    return (chord_dictionary[first_half] + chord_dictionary[second_half] + 
+                            chord_dictionary[third_half] + chord_dictionary[fourth_half])
 
-        # Recursively construct the stroke for the first and second halves
-        first_half_stroke = construct_stroke(first_half, chord_dictionary, memo)
-        second_half_stroke = construct_stroke(second_half, chord_dictionary, memo)
+    # When the target chord is made of five definitions that are in the dictionary
+    for split_location1 in range(1, len(target_chord)):
+        for split_location2 in range(split_location1 + 1, len(target_chord)):
+            for split_location3 in range(split_location2 + 1, len(target_chord)):
+                for split_location4 in range(split_location3 + 1, len(target_chord)):
+                    first_half = target_chord[:split_location1]
+                    second_half = target_chord[split_location1:split_location2]
+                    third_half = target_chord[split_location2:split_location3]
+                    fourth_half = target_chord[split_location3:split_location4]
+                    fifth_half = target_chord[split_location4:]
+                    if (first_half in chord_dictionary and second_half in chord_dictionary and 
+                        third_half in chord_dictionary and fourth_half in chord_dictionary and 
+                        fifth_half in chord_dictionary):
+                        return (chord_dictionary[first_half] + chord_dictionary[second_half] + 
+                                chord_dictionary[third_half] + chord_dictionary[fourth_half] + 
+                                chord_dictionary[fifth_half])
 
-        # If both halves have a stroke, combine them and store the result in the memo
-        if first_half_stroke and second_half_stroke:
-            return first_half_stroke + second_half_stroke
+    # When the target chord is made of six definitions that are in the dictionary
+    for split_location1 in range(1, len(target_chord)):
+        for split_location2 in range(split_location1 + 1, len(target_chord)):
+            for split_location3 in range(split_location2 + 1, len(target_chord)):
+                for split_location4 in range(split_location3 + 1, len(target_chord)):
+                    for split_location5 in range(split_location4 + 1, len(target_chord)):
+                        first_half = target_chord[:split_location1]
+                        second_half = target_chord[split_location1:split_location2]
+                        third_half = target_chord[split_location2:split_location3]
+                        fourth_half = target_chord[split_location3:split_location4]
+                        fifth_half = target_chord[split_location4:split_location5]
+                        sixth_half = target_chord[split_location5:]
+                        if (first_half in chord_dictionary and second_half in chord_dictionary and 
+                            third_half in chord_dictionary and fourth_half in chord_dictionary and 
+                            fifth_half in chord_dictionary and sixth_half in chord_dictionary):
+                            return (chord_dictionary[first_half] + chord_dictionary[second_half] + 
+                                    chord_dictionary[third_half] + chord_dictionary[fourth_half] + 
+                                    chord_dictionary[fifth_half] + chord_dictionary[sixth_half])
+
+    # When the target chord is made of seven definitions that are in the dictionary
+    for split_location1 in range(1, len(target_chord)):
+        for split_location2 in range(split_location1 + 1, len(target_chord)):
+            for split_location3 in range(split_location2 + 1, len(target_chord)):
+                for split_location4 in range(split_location3 + 1, len(target_chord)):
+                    for split_location5 in range(split_location4 + 1, len(target_chord)):
+                        for split_location6 in range(split_location5 + 1, len(target_chord)):
+                            first_half = target_chord[:split_location1]
+                            second_half = target_chord[split_location1:split_location2]
+                            third_half = target_chord[split_location2:split_location3]
+                            fourth_half = target_chord[split_location3:split_location4]
+                            fifth_half = target_chord[split_location4:split_location5]
+                            sixth_half = target_chord[split_location5:split_location6]
+                            seventh_half = target_chord[split_location6:]
+                            if (first_half in chord_dictionary and second_half in chord_dictionary and 
+                                third_half in chord_dictionary and fourth_half in chord_dictionary and 
+                                fifth_half in chord_dictionary and sixth_half in chord_dictionary and 
+                                seventh_half in chord_dictionary):
+                                return (chord_dictionary[first_half] + chord_dictionary[second_half] + 
+                                        chord_dictionary[third_half] + chord_dictionary[fourth_half] + 
+                                        chord_dictionary[fifth_half] + chord_dictionary[sixth_half] + 
+                                        chord_dictionary[seventh_half])
+
+    # When the target chord is made of eight definitions that are in the dictionary
+    for split_location1 in range(1, len(target_chord)):
+        for split_location2 in range(split_location1 + 1, len(target_chord)):
+            for split_location3 in range(split_location2 + 1, len(target_chord)):
+                for split_location4 in range(split_location3 + 1, len(target_chord)):
+                    for split_location5 in range(split_location4 + 1, len(target_chord)):
+                        for split_location6 in range(split_location5 + 1, len(target_chord)):
+                            for split_location7 in range(split_location6 + 1, len(target_chord)):
+                                first_half = target_chord[:split_location1]
+                                second_half = target_chord[split_location1:split_location2]
+                                third_half = target_chord[split_location2:split_location3]
+                                fourth_half = target_chord[split_location3:split_location4]
+                                fifth_half = target_chord[split_location4:split_location5]
+                                sixth_half = target_chord[split_location5:split_location6]
+                                seventh_half = target_chord[split_location6:split_location7]
+                                eighth_half = target_chord[split_location7:]
+                                if (first_half in chord_dictionary and second_half in chord_dictionary and 
+                                    third_half in chord_dictionary and fourth_half in chord_dictionary and 
+                                    fifth_half in chord_dictionary and sixth_half in chord_dictionary and 
+                                    seventh_half in chord_dictionary and eighth_half in chord_dictionary):
+                                    return (chord_dictionary[first_half] + chord_dictionary[second_half] + 
+                                            chord_dictionary[third_half] + chord_dictionary[fourth_half] + 
+                                            chord_dictionary[fifth_half] + chord_dictionary[sixth_half] + 
+                                            chord_dictionary[seventh_half] + chord_dictionary[eighth_half])
+
+    # When the target chord is made of nine definitions that are in the dictionary
+    for split_location1 in range(1, len(target_chord)):
+        for split_location2 in range(split_location1 + 1, len(target_chord)):
+            for split_location3 in range(split_location2 + 1, len(target_chord)):
+                for split_location4 in range(split_location3 + 1, len(target_chord)):
+                    for split_location5 in range(split_location4 + 1, len(target_chord)):
+                        for split_location6 in range(split_location5 + 1, len(target_chord)):
+                            for split_location7 in range(split_location6 + 1, len(target_chord)):
+                                for split_location8 in range(split_location7 + 1, len(target_chord)):
+                                    first_half = target_chord[:split_location1]
+                                    second_half = target_chord[split_location1:split_location2]
+                                    third_half = target_chord[split_location2:split_location3]
+                                    fourth_half = target_chord[split_location3:split_location4]
+                                    fifth_half = target_chord[split_location4:split_location5]
+                                    sixth_half = target_chord[split_location5:split_location6]
+                                    seventh_half = target_chord[split_location6:split_location7]
+                                    eighth_half = target_chord[split_location7:split_location8]
+                                    ninth_half = target_chord[split_location8:]
+                                    if (first_half in chord_dictionary and second_half in chord_dictionary and 
+                                        third_half in chord_dictionary and fourth_half in chord_dictionary and 
+                                        fifth_half in chord_dictionary and sixth_half in chord_dictionary and 
+                                        seventh_half in chord_dictionary and eighth_half in chord_dictionary):
+                                        return (chord_dictionary[first_half] + chord_dictionary[second_half] + 
+                                                chord_dictionary[third_half] + chord_dictionary[fourth_half] + 
+                                                chord_dictionary[fifth_half] + chord_dictionary[sixth_half] + 
+                                                chord_dictionary[seventh_half] + chord_dictionary[eighth_half] +
+                                                chord_dictionary[ninth_half])
+
+
+
 
 
 
@@ -433,4 +555,4 @@ def lookup(strokes):
 
 
 print(lookup(("PN", "PNen")))
-
+print(lookup(("PN", "FCNRIUuiapcf")))
