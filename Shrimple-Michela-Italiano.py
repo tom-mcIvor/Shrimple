@@ -1,6 +1,6 @@
 """
-@Jalexu on discord had an idea for fingerspelling using the whole keyboard, not just one letter at a time
-Key considerations were that it wasn't tailored for English, as this is mostly for foreign words/names
+@Jalexu on discord had an idea for fingerspelling using the whole keyboard, not just one letter at a time, orthospelling was born
+Turns out it was actually born 200 years ago for the Michela stenotype, but back then they implemented it by hand, not generatively with a python script called Shrimple
 """
 
 entry_strokes={
@@ -105,7 +105,7 @@ user_definitions={
     "ui": "i ", #word ending vowel
     "uie" :"o ", #word ending vowel
     "uia" :"u ", #word ending vowel
-    
+
     "i": "i",
     "ia": "è",
     "ianc": "ò",
@@ -237,14 +237,12 @@ import re
 
 LONGEST_KEY = 40
 
-
+"""
 def construct_every_combination(part_of_the_keyboard):
-    """
-    Given a set of options, left or right, up or down.
-    Will return all combinations:
-    left+up, left+down, right+up, right+down, etc.
-    """
-    
+    #Given a set of options, left or right, up or down.
+    #Will return all combinations:
+    #left+up, left+down, right+up, right+down, etc.
+
     path_direction=(part_of_the_keyboard.keys(),part_of_the_keyboard.keys(),part_of_the_keyboard.keys(),part_of_the_keyboard.keys(),part_of_the_keyboard.keys())
 
     every_combination_dictionary={}
@@ -289,14 +287,57 @@ def construct_every_combination(part_of_the_keyboard):
 
     return every_combination_dictionary
 
+
 #FSCZPNRXIUuieanpzcsf
 generated_definitions = construct_every_combination(user_definitions)
 
-"""
 import json
 with open("MichelaShrimple.json", "w") as outfile:
     json.dump(generated_definitions, outfile, indent=0)
+
 """
+
+
+
+def construct_stroke(target_chord, chord_dictionary, memo={}):
+    """
+    Construct a stroke for a target chord using a dictionary of known chord definitions.
+
+    Args:
+        target_chord (str): The target chord to construct a stroke for.
+        chord_dictionary (dict): A dictionary of known chord definitions.
+        memo (dict): A dictionary to store intermediate results for memoization (default: {}).
+
+    Returns:
+        str: The constructed stroke for the target chord.
+    """
+
+    # Base case: If the target chord is in the dictionary, return its definition
+    if target_chord in chord_dictionary:
+        return chord_dictionary[target_chord]
+
+    # Base case: If the target chord is empty, return an empty string
+    if not target_chord:
+        return ""
+
+    # If the result is already in the memo, return it
+    if target_chord in memo:
+        return memo[target_chord]
+
+    # Try to find a split point in the target chord
+    for i in range(1, len(target_chord)):
+        first_half = target_chord[:i]
+        second_half = target_chord[i:]
+
+        # Recursively construct the stroke for the first and second halves
+        first_half_stroke = construct_stroke(first_half, chord_dictionary, memo)
+        second_half_stroke = construct_stroke(second_half, chord_dictionary, memo)
+
+        # If both halves have a stroke, combine them and store the result in the memo
+        if first_half_stroke and second_half_stroke:
+            return first_half_stroke + second_half_stroke
+
+
 
 def lookup(strokes):
     output_string=""
@@ -364,14 +405,14 @@ def lookup(strokes):
         if not match:
             raise KeyError
         
-        stroke_output=generated_definitions[match[1]]
+        stroke_output=construct_stroke(match[1], user_definitions)
 
         #do whatever checks you want here
 
-        
-        
-        
-        
+        if ' ' in stroke_output:
+            stroke_output = stroke_output.replace(" ","") + " "
+
+
         if not stroke_number==0 or (dedicated_key in strokes[0]):
             output_string+=stroke_output
 
@@ -390,9 +431,6 @@ def lookup(strokes):
 
 
 
-#lookup(("+KAPZ","KWROU"))
-#lookup(("KAPS","KWROU"))
-#print(lookup(("PN", "PNen")))
-#print(lookup(("KAPS", "WA*TD", "KWRAL")))
-#print(lookup(("KAPS", "WA*TD", "KWRAL", "PAL")))
+
+print(lookup(("PN", "PNen")))
 
