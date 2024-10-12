@@ -221,54 +221,12 @@ left_finger_chords_you_can_use_to_exit_shrimple_with={
     #Emily's stuff (might also have to do this for my phrasing too?)
     "SKWH",
 
-    #Jeff's full phrasing
-    "SWR",  #I
-    "TWR",  #we
-    "KPWR", #you
-    "KWHR", #he
-    "SKWHR",#she
-    "KPWH", #it
-    "TWH",  #they
-    "STKH", #this
-    "STKWH",#these
-    "STWH", #that
-    "STHR", #there
-    "STPHR",#there
-    #"STKPWHR",#null
-    "STWR", #null
 
 }
 
 left_hand_chords_you_can_use_to_exit_shrimple_with={
 
-    #Jeff's full phrasing
-    "SWR",  #I
-    "TWR",  #we
-    "KPWR", #you
-    "KWHR", #he
-    "SKWHR",#she
-    "KPWH", #it
-    "TWH",  #they
-    "STKH", #this
-    "STKWH",#these
-    "STWH", #that
-    "STHR", #there
-    "STPHR",#there
-    "STKPWHR",#null
-    "STWR", #null
 
-    #Jeff's simple starters
-    "STPA", #if
-    "STHA", #that
-    "SWH",  #when
-    "SWHR", #where
-    "SWHA", #what
-    "SWHO", #who
-    "SWHAO",#why
-    "SWHRAO",#how
-    "SPWH", #but
-    "SKP",  #and
-    "SKPR", #or
 
 }
 
@@ -286,7 +244,6 @@ left_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with=[
 right_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with=[
     #"TZ"
 ]
-
 
 
 
@@ -405,37 +362,70 @@ def aericks_denumberizer(old_outline):
     return "/".join(new_strokes)
 
 
-def construct_stroke(target_chord, chord_dictionary):
-    """
-    Construct a stroke for a target chord using a dictionary of known chord definitions.
 
-    Args:
-        target_chord (str): The target chord to construct a stroke for.
-        chord_dictionary (dict): A dictionary of known chord definitions.
 
-    Returns:
-        str: The constructed stroke for the target chord.
-    """
+def construct_stroke(target_chord, chord_dictionary, has_asterisk = False):
 
     # When the target chord is in the dictionary
-    if target_chord in chord_dictionary:
-        return chord_dictionary[target_chord]
+    if not has_asterisk:
+        if target_chord in chord_dictionary:
+            return chord_dictionary[target_chord]
+    else:
+        if "*" + target_chord in chord_dictionary:
+            return chord_dictionary["*"+target_chord]
+
 
     # When the target chord is made of two definitions that are in the dictionary
     for split_location in range(1, len(target_chord)):
         first_half = target_chord[:split_location]
         second_half = target_chord[split_location:]
-        if first_half in chord_dictionary and second_half in chord_dictionary:
-            return chord_dictionary[first_half] + chord_dictionary[second_half]
+        if not has_asterisk:
+            if (first_half in chord_dictionary and 
+                second_half in chord_dictionary):
+                return (chord_dictionary[first_half] + 
+                        chord_dictionary[second_half])
+        else:
+            if ("*" + first_half in chord_dictionary and 
+                second_half in chord_dictionary):
+                return (chord_dictionary["*"+first_half] + 
+                        chord_dictionary[second_half])
+            elif (first_half in chord_dictionary and 
+                  "*" + second_half in chord_dictionary):
+                return (chord_dictionary[first_half] + 
+                        chord_dictionary["*"+second_half])
 
     # When the target chord is made of three definitions that are in the dictionary
     for split_location1 in range(1, len(target_chord)):
         for split_location2 in range(split_location1 + 1, len(target_chord)):
             first_half = target_chord[:split_location1]
-            middle = target_chord[split_location1:split_location2]
-            second_half = target_chord[split_location2:]
-            if first_half in chord_dictionary and middle in chord_dictionary and second_half in chord_dictionary:
-                return chord_dictionary[first_half] + chord_dictionary[middle] + chord_dictionary[second_half]
+            second_half = target_chord[split_location1:split_location2]
+            third_half = target_chord[split_location2:]
+            if not has_asterisk:
+                if (first_half in chord_dictionary and 
+                    second_half in chord_dictionary and 
+                    third_half in chord_dictionary):
+                    return (chord_dictionary[first_half] + 
+                            chord_dictionary[second_half] + 
+                            chord_dictionary[third_half])
+            else:
+                if ("*" + first_half in chord_dictionary and 
+                    second_half in chord_dictionary and 
+                    third_half in chord_dictionary):
+                    return (chord_dictionary["*"+first_half] + 
+                            chord_dictionary[second_half] + 
+                            chord_dictionary[third_half])
+                elif (first_half in chord_dictionary and 
+                    "*" + second_half in chord_dictionary and 
+                    third_half in chord_dictionary):
+                    return (chord_dictionary[first_half] + 
+                            chord_dictionary["*"+second_half] + 
+                            chord_dictionary[third_half])
+                elif (first_half in chord_dictionary and 
+                    second_half in chord_dictionary and 
+                    "*" + third_half in chord_dictionary):
+                    return (chord_dictionary[first_half] + 
+                            chord_dictionary[second_half] + 
+                            chord_dictionary["*"+third_half])
 
     # When the target chord is made of four definitions that are in the dictionary
     for split_location1 in range(1, len(target_chord)):
@@ -445,10 +435,48 @@ def construct_stroke(target_chord, chord_dictionary):
                 second_half = target_chord[split_location1:split_location2]
                 third_half = target_chord[split_location2:split_location3]
                 fourth_half = target_chord[split_location3:]
-                if (first_half in chord_dictionary and second_half in chord_dictionary and 
-                    third_half in chord_dictionary and fourth_half in chord_dictionary):
-                    return (chord_dictionary[first_half] + chord_dictionary[second_half] + 
-                            chord_dictionary[third_half] + chord_dictionary[fourth_half])
+                if not has_asterisk:
+                    if (first_half in chord_dictionary and 
+                        second_half in chord_dictionary and 
+                        third_half in chord_dictionary and 
+                        fourth_half in chord_dictionary):
+                        return (chord_dictionary[first_half] + 
+                                chord_dictionary[second_half] + 
+                                chord_dictionary[third_half] + 
+                                chord_dictionary[fourth_half])
+                else:
+                    if ("*" + first_half in chord_dictionary and 
+                        second_half in chord_dictionary and 
+                        third_half in chord_dictionary and
+                        fourth_half in chord_dictionary):
+                        return (chord_dictionary["*"+first_half] + 
+                                chord_dictionary[second_half] + 
+                                chord_dictionary[third_half] + 
+                                chord_dictionary[fourth_half])
+                    elif (first_half in chord_dictionary and 
+                        "*" + second_half in chord_dictionary and 
+                        third_half in chord_dictionary and
+                        fourth_half in chord_dictionary):
+                        return (chord_dictionary[first_half] + 
+                                chord_dictionary["*"+second_half] + 
+                                chord_dictionary[third_half] + 
+                                chord_dictionary[fourth_half])
+                    elif (first_half in chord_dictionary and 
+                        second_half in chord_dictionary and 
+                        "*" + third_half in chord_dictionary and
+                        fourth_half in chord_dictionary):
+                        return (chord_dictionary[first_half] + 
+                                chord_dictionary[second_half] + 
+                                chord_dictionary["*"+third_half] + 
+                                chord_dictionary[fourth_half])
+                    elif (first_half in chord_dictionary and 
+                        second_half in chord_dictionary and 
+                        third_half in chord_dictionary and
+                        "*" + fourth_half in chord_dictionary):
+                        return (chord_dictionary[first_half] + 
+                                chord_dictionary[second_half] + 
+                                chord_dictionary[third_half] + 
+                                chord_dictionary["*"+fourth_half])
 
     # When the target chord is made of five definitions that are in the dictionary
     for split_location1 in range(1, len(target_chord)):
@@ -460,12 +488,68 @@ def construct_stroke(target_chord, chord_dictionary):
                     third_half = target_chord[split_location2:split_location3]
                     fourth_half = target_chord[split_location3:split_location4]
                     fifth_half = target_chord[split_location4:]
-                    if (first_half in chord_dictionary and second_half in chord_dictionary and 
-                        third_half in chord_dictionary and fourth_half in chord_dictionary and 
-                        fifth_half in chord_dictionary):
-                        return (chord_dictionary[first_half] + chord_dictionary[second_half] + 
-                                chord_dictionary[third_half] + chord_dictionary[fourth_half] + 
-                                chord_dictionary[fifth_half])
+                    if not has_asterisk:
+                        if (first_half in chord_dictionary and 
+                            second_half in chord_dictionary and 
+                            third_half in chord_dictionary and 
+                            fourth_half in chord_dictionary and
+                            fifth_half in chord_dictionary):
+                            return (chord_dictionary[first_half] + 
+                                    chord_dictionary[second_half] + 
+                                    chord_dictionary[third_half] + 
+                                    chord_dictionary[fourth_half] +
+                                    chord_dictionary[fifth_half])
+                    else:
+                        if ("*" + first_half in chord_dictionary and 
+                            second_half in chord_dictionary and 
+                            third_half in chord_dictionary and
+                            fourth_half in chord_dictionary and
+                            fifth_half in chord_dictionary):
+                            return (chord_dictionary["*"+first_half] + 
+                                    chord_dictionary[second_half] + 
+                                    chord_dictionary[third_half] + 
+                                    chord_dictionary[fourth_half] +
+                                    chord_dictionary[fifth_half])
+                        elif (first_half in chord_dictionary and 
+                            "*" + second_half in chord_dictionary and 
+                            third_half in chord_dictionary and
+                            fourth_half in chord_dictionary and
+                            fifth_half in chord_dictionary):
+                            return (chord_dictionary[first_half] + 
+                                    chord_dictionary["*"+second_half] + 
+                                    chord_dictionary[third_half] + 
+                                    chord_dictionary[fourth_half] +
+                                    chord_dictionary[fifth_half])
+                        elif (first_half in chord_dictionary and 
+                            second_half in chord_dictionary and 
+                            "*" + third_half in chord_dictionary and
+                            fourth_half in chord_dictionary and
+                            fifth_half in chord_dictionary):
+                            return (chord_dictionary[first_half] + 
+                                    chord_dictionary[second_half] + 
+                                    chord_dictionary["*"+third_half] + 
+                                    chord_dictionary[fourth_half] +
+                                    chord_dictionary[fifth_half])
+                        elif (first_half in chord_dictionary and 
+                            second_half in chord_dictionary and 
+                            third_half in chord_dictionary and
+                            "*" + fourth_half in chord_dictionary and
+                            fifth_half in chord_dictionary):
+                            return (chord_dictionary[first_half] + 
+                                    chord_dictionary[second_half] + 
+                                    chord_dictionary[third_half] + 
+                                    chord_dictionary["*"+fourth_half] +
+                                    chord_dictionary[fifth_half])
+                        elif (first_half in chord_dictionary and 
+                            second_half in chord_dictionary and 
+                            third_half in chord_dictionary and
+                            fourth_half in chord_dictionary and
+                            "*" + fifth_half in chord_dictionary):
+                            return (chord_dictionary[first_half] + 
+                                    chord_dictionary[second_half] + 
+                                    chord_dictionary[third_half] + 
+                                    chord_dictionary[fourth_half] +
+                                    chord_dictionary["*"+fifth_half])
 
     # When the target chord is made of six definitions that are in the dictionary
     for split_location1 in range(1, len(target_chord)):
@@ -479,88 +563,97 @@ def construct_stroke(target_chord, chord_dictionary):
                         fourth_half = target_chord[split_location3:split_location4]
                         fifth_half = target_chord[split_location4:split_location5]
                         sixth_half = target_chord[split_location5:]
-                        if (first_half in chord_dictionary and second_half in chord_dictionary and 
-                            third_half in chord_dictionary and fourth_half in chord_dictionary and 
-                            fifth_half in chord_dictionary and sixth_half in chord_dictionary):
-                            return (chord_dictionary[first_half] + chord_dictionary[second_half] + 
-                                    chord_dictionary[third_half] + chord_dictionary[fourth_half] + 
-                                    chord_dictionary[fifth_half] + chord_dictionary[sixth_half])
+                        if not has_asterisk:
+                            if (first_half in chord_dictionary and 
+                                second_half in chord_dictionary and 
+                                third_half in chord_dictionary and 
+                                fourth_half in chord_dictionary and
+                                fifth_half in chord_dictionary and
+                                sixth_half in chord_dictionary):
+                                return (chord_dictionary[first_half] + 
+                                        chord_dictionary[second_half] + 
+                                        chord_dictionary[third_half] + 
+                                        chord_dictionary[fourth_half] +
+                                        chord_dictionary[fifth_half] +
+                                        chord_dictionary[sixth_half])
+                        else:
+                            if ("*" + first_half in chord_dictionary and 
+                                second_half in chord_dictionary and 
+                                third_half in chord_dictionary and
+                                fourth_half in chord_dictionary and
+                                fifth_half in chord_dictionary and
+                                sixth_half in chord_dictionary):
+                                return (chord_dictionary["*"+first_half] + 
+                                        chord_dictionary[second_half] + 
+                                        chord_dictionary[third_half] + 
+                                        chord_dictionary[fourth_half] +
+                                        chord_dictionary[fifth_half] +
+                                        chord_dictionary[sixth_half])
+                            elif (first_half in chord_dictionary and 
+                                "*" + second_half in chord_dictionary and 
+                                third_half in chord_dictionary and
+                                fourth_half in chord_dictionary and
+                                fifth_half in chord_dictionary and
+                                sixth_half in chord_dictionary):
+                                return (chord_dictionary[first_half] + 
+                                        chord_dictionary["*"+second_half] + 
+                                        chord_dictionary[third_half] + 
+                                        chord_dictionary[fourth_half] +
+                                        chord_dictionary[fifth_half] +
+                                        chord_dictionary[sixth_half])
+                            elif (first_half in chord_dictionary and 
+                                second_half in chord_dictionary and 
+                                "*" + third_half in chord_dictionary and
+                                fourth_half in chord_dictionary and
+                                fifth_half in chord_dictionary and
+                                sixth_half in chord_dictionary):
+                                return (chord_dictionary[first_half] + 
+                                        chord_dictionary[second_half] + 
+                                        chord_dictionary["*"+third_half] + 
+                                        chord_dictionary[fourth_half] +
+                                        chord_dictionary[fifth_half] +
+                                        chord_dictionary[sixth_half])
+                            elif (first_half in chord_dictionary and 
+                                second_half in chord_dictionary and 
+                                third_half in chord_dictionary and
+                                "*" + fourth_half in chord_dictionary and
+                                fifth_half in chord_dictionary and
+                                sixth_half in chord_dictionary):
+                                return (chord_dictionary[first_half] + 
+                                        chord_dictionary[second_half] + 
+                                        chord_dictionary[third_half] + 
+                                        chord_dictionary["*"+fourth_half] +
+                                        chord_dictionary[fifth_half] +
+                                        chord_dictionary[sixth_half])
+                            elif (first_half in chord_dictionary and 
+                                second_half in chord_dictionary and 
+                                third_half in chord_dictionary and
+                                fourth_half in chord_dictionary and
+                                "*" + fifth_half in chord_dictionary and
+                                sixth_half in chord_dictionary):
+                                return (chord_dictionary[first_half] + 
+                                        chord_dictionary[second_half] + 
+                                        chord_dictionary[third_half] + 
+                                        chord_dictionary[fourth_half] +
+                                        chord_dictionary["*"+fifth_half] +
+                                        chord_dictionary[sixth_half])
+                            elif (first_half in chord_dictionary and 
+                                second_half in chord_dictionary and 
+                                third_half in chord_dictionary and
+                                fourth_half in chord_dictionary and
+                                fifth_half in chord_dictionary and
+                                "*" + sixth_half in chord_dictionary):
+                                return (chord_dictionary[first_half] + 
+                                        chord_dictionary[second_half] + 
+                                        chord_dictionary[third_half] + 
+                                        chord_dictionary[fourth_half] +
+                                        chord_dictionary[fifth_half] +
+                                        chord_dictionary["*"+sixth_half])
 
-    # When the target chord is made of seven definitions that are in the dictionary
-    for split_location1 in range(1, len(target_chord)):
-        for split_location2 in range(split_location1 + 1, len(target_chord)):
-            for split_location3 in range(split_location2 + 1, len(target_chord)):
-                for split_location4 in range(split_location3 + 1, len(target_chord)):
-                    for split_location5 in range(split_location4 + 1, len(target_chord)):
-                        for split_location6 in range(split_location5 + 1, len(target_chord)):
-                            first_half = target_chord[:split_location1]
-                            second_half = target_chord[split_location1:split_location2]
-                            third_half = target_chord[split_location2:split_location3]
-                            fourth_half = target_chord[split_location3:split_location4]
-                            fifth_half = target_chord[split_location4:split_location5]
-                            sixth_half = target_chord[split_location5:split_location6]
-                            seventh_half = target_chord[split_location6:]
-                            if (first_half in chord_dictionary and second_half in chord_dictionary and 
-                                third_half in chord_dictionary and fourth_half in chord_dictionary and 
-                                fifth_half in chord_dictionary and sixth_half in chord_dictionary and 
-                                seventh_half in chord_dictionary):
-                                return (chord_dictionary[first_half] + chord_dictionary[second_half] + 
-                                        chord_dictionary[third_half] + chord_dictionary[fourth_half] + 
-                                        chord_dictionary[fifth_half] + chord_dictionary[sixth_half] + 
-                                        chord_dictionary[seventh_half])
 
-    # When the target chord is made of eight definitions that are in the dictionary
-    for split_location1 in range(1, len(target_chord)):
-        for split_location2 in range(split_location1 + 1, len(target_chord)):
-            for split_location3 in range(split_location2 + 1, len(target_chord)):
-                for split_location4 in range(split_location3 + 1, len(target_chord)):
-                    for split_location5 in range(split_location4 + 1, len(target_chord)):
-                        for split_location6 in range(split_location5 + 1, len(target_chord)):
-                            for split_location7 in range(split_location6 + 1, len(target_chord)):
-                                first_half = target_chord[:split_location1]
-                                second_half = target_chord[split_location1:split_location2]
-                                third_half = target_chord[split_location2:split_location3]
-                                fourth_half = target_chord[split_location3:split_location4]
-                                fifth_half = target_chord[split_location4:split_location5]
-                                sixth_half = target_chord[split_location5:split_location6]
-                                seventh_half = target_chord[split_location6:split_location7]
-                                eighth_half = target_chord[split_location7:]
-                                if (first_half in chord_dictionary and second_half in chord_dictionary and 
-                                    third_half in chord_dictionary and fourth_half in chord_dictionary and 
-                                    fifth_half in chord_dictionary and sixth_half in chord_dictionary and 
-                                    seventh_half in chord_dictionary and eighth_half in chord_dictionary):
-                                    return (chord_dictionary[first_half] + chord_dictionary[second_half] + 
-                                            chord_dictionary[third_half] + chord_dictionary[fourth_half] + 
-                                            chord_dictionary[fifth_half] + chord_dictionary[sixth_half] + 
-                                            chord_dictionary[seventh_half] + chord_dictionary[eighth_half])
+    return ""
 
-    # When the target chord is made of nine definitions that are in the dictionary
-    for split_location1 in range(1, len(target_chord)):
-        for split_location2 in range(split_location1 + 1, len(target_chord)):
-            for split_location3 in range(split_location2 + 1, len(target_chord)):
-                for split_location4 in range(split_location3 + 1, len(target_chord)):
-                    for split_location5 in range(split_location4 + 1, len(target_chord)):
-                        for split_location6 in range(split_location5 + 1, len(target_chord)):
-                            for split_location7 in range(split_location6 + 1, len(target_chord)):
-                                for split_location8 in range(split_location7 + 1, len(target_chord)):
-                                    first_half = target_chord[:split_location1]
-                                    second_half = target_chord[split_location1:split_location2]
-                                    third_half = target_chord[split_location2:split_location3]
-                                    fourth_half = target_chord[split_location3:split_location4]
-                                    fifth_half = target_chord[split_location4:split_location5]
-                                    sixth_half = target_chord[split_location5:split_location6]
-                                    seventh_half = target_chord[split_location6:split_location7]
-                                    eighth_half = target_chord[split_location7:split_location8]
-                                    ninth_half = target_chord[split_location8:]
-                                    if (first_half in chord_dictionary and second_half in chord_dictionary and 
-                                        third_half in chord_dictionary and fourth_half in chord_dictionary and 
-                                        fifth_half in chord_dictionary and sixth_half in chord_dictionary and 
-                                        seventh_half in chord_dictionary and eighth_half in chord_dictionary):
-                                        return (chord_dictionary[first_half] + chord_dictionary[second_half] + 
-                                                chord_dictionary[third_half] + chord_dictionary[fourth_half] + 
-                                                chord_dictionary[fifth_half] + chord_dictionary[sixth_half] + 
-                                                chord_dictionary[seventh_half] + chord_dictionary[eighth_half] +
-                                                chord_dictionary[ninth_half])
+
 
 
 
@@ -657,19 +750,16 @@ def lookup(strokes):
             raise KeyError
 
 
-
         start_thing=construct_stroke(match[2], starter_letter)
         if "*" in match[3]:
 
-            for i in range(len(match[2])+1):
-                potential_end_thing=construct_stroke(match[4][:i] + "*" + match[4][i:], ender_letter)
-                if potential_end_thing:
-                    end_thing = potential_end_thing
+            end_thing=construct_stroke(match[4], ender_letter, has_asterisk = True)
 
             if end_thing == "":
-                middle_thing=construct_stroke(match[3], vowels)
+                middle_thing=construct_stroke(match[3].replace("*",""), vowels, has_asterisk=True)
             else:
                 middle_thing=construct_stroke(match[3].replace("*",""), vowels)
+
 
         else:
             end_thing=construct_stroke(match[4], ender_letter)
@@ -717,7 +807,7 @@ def lookup(strokes):
 
 #lookup(("+KAPZ","KWROU"))
 #lookup(("KAPS","STKHR"))
-#print(lookup(("KAPS", "STA*RTD")))
+print(lookup(("KAPS", "STA*RTD")))
 #print(lookup(("KAPS", "STKHRA*RTD")))
 #print(lookup(("KAPS", "WA*TD")))
 #print(lookup(("KAPS", "WA*TD", "KWRAL")))
