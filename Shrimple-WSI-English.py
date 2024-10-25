@@ -5,14 +5,24 @@ Key considerations were that it wasn't tailored for English, as this is mostly f
 
 
 entry_strokes={
-    "starter normal"  :['KWR*', 'SP*', 'SHREUFRPL', 'SHR*EUFRPL'],           #shrimple with normal formatting
-    "starter attached":['KWR', 'SW*'],      #shrimple with not space at the start
-    "starter cap"     :['TPH*'],            #shrimple but capped the first letter
-    "starter acronyms":['KAPS'],            #shrimple but all caps
-    "starter cap attached":['TPH*FPLT'],
-    "starter acronyms attached":['TPH*FPLTS']
-}
+    #just use this top one, rewrite to whatever you wanna use
 
+    "SHREUFRPL" : {"prefix":"",
+                   "suffix":""},
+
+    "KWR*"      : {"prefix":"",
+                   "suffix":""},
+
+    "KWR"       : {"prefix":"{^}"},
+                   "suffix":"",
+
+    "TPH*"      : {"prefix":"{-|}", #capitalise first letter
+                   "suffix":""},
+
+    "KAPS"      : {"prefix":"{mode:caps}", #capitalise everything
+                   "suffix":"{mode:reset}"}
+
+}
 
 #dedicated key settings:
 dedicated_key = '+'             #Instead of a starter stroke
@@ -670,9 +680,8 @@ def lookup(strokes):
         if stroke_number == 0:
             if not dedicated_key in stroke:
                 stroke_valid = False
-                for entry_stroke_category in entry_strokes.values():
-                    if stroke in entry_stroke_category or strokes in entry_stroke_category:
-                        stroke_valid = True
+                if stroke in entry_strokes:
+                    stroke_valid = True
                 if not stroke_valid:
                     raise KeyError
                 if len(strokes)==1:
@@ -680,9 +689,8 @@ def lookup(strokes):
         else:
             if not dedicated_key in stroke:
                 stroke_valid = False
-                for entry_stroke_category in entry_strokes.values():
-                    if stroke in entry_stroke_category:
-                        stroke_valid = True
+                if stroke in entry_strokes:
+                    stroke_valid = True
                 if stroke_valid:
                     raise KeyError
                 
@@ -791,18 +799,8 @@ def lookup(strokes):
                     )
 
 
-
-
-    if strokes[0] in entry_strokes['starter cap']:
-        return output_string.capitalize()
-    if strokes[0] in entry_strokes["starter acronyms"]:
-        return output_string.upper()
-    if strokes[0] in entry_strokes['starter attached']:
-        return "{^^}"+output_string
-    if strokes[0] in entry_strokes['starter cap attached']:
-        return "{^^}"+output_string.capitalize()
-    if strokes[0] in entry_strokes['starter acronyms attached']:
-        return "{^^}"+output_string.upper()
+    if strokes[0] in entry_strokes:
+        return entry_strokes[strokes[0]]["prefix"] + output_string + entry_strokes[strokes[0]]["suffix"]
     return output_string
 
 #lookup(("+KAPZ","KWROU"))
