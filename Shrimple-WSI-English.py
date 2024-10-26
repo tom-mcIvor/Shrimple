@@ -42,6 +42,7 @@ starter_letter={
     "S" : "s",
     "STK": "dis",
     "STKPW": "z",
+    "*SKP": "&",
     "SKWR": "j",
     "SKHR": "shr", #Josiah theory
     "SH" : "sh",
@@ -765,8 +766,14 @@ def lookup(strokes):
 
             if end_thing == "":
                 middle_thing=construct_stroke(match[3].replace("*",""), vowels, has_asterisk=True)
+
+                if middle_thing=="":
+                    start_thing=construct_stroke(match[2], starter_letter, has_asterisk=True)
+
             else:
                 middle_thing=construct_stroke(match[3].replace("*",""), vowels)
+
+
 
 
         else:
@@ -804,7 +811,7 @@ def lookup(strokes):
     return output_string
 
 #lookup(("+KAPZ","KWROU"))
-#lookup(("KAPS","STKHR"))
+#print(lookup(("+WA*U")))
 print(lookup(("KAPS", "STA*RTD")))
 #print(lookup(("KAPS", "STKHRA*RTD")))
 #print(lookup(("KAPS", "WA*TD")))
