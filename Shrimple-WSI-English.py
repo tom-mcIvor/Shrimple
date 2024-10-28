@@ -3,7 +3,6 @@
 Key considerations were that it wasn't tailored for English, as this is mostly for foreign words/names
 """
 
-
 entry_strokes={
     #just use this top one, rewrite to whatever you wanna use
 
@@ -13,8 +12,8 @@ entry_strokes={
     "KWR*"      : {"prefix":"",
                    "suffix":""},
 
-    "KWR"       : {"prefix":"{^}"},
-                   "suffix":"",
+    "KWR"       : {"prefix":"{^}",
+                   "suffix":""},
 
     "TPH*"      : {"prefix":"{-|}", #capitalise first letter
                    "suffix":""},
@@ -83,14 +82,14 @@ vowels={
     
     "":"",
 
-    "*":"",
+     "*":"",
+     "*":"",
     "A*":"u",
     "AO*":"i",
     "O*":"e",
     "A*EU":"ay",
     "O*EU":"oy",
-    "*EU":"y",
-
+     "*EU":"y",
 
     "A"   :"a",
     "AO"  :"oo",
@@ -664,11 +663,42 @@ def construct_stroke(target_chord, chord_dictionary, has_asterisk = False):
 
     return ""
 
+def slices(s, n):
+    if n == 1:
+        yield [s]
+    else:
+        for split in range(1, len(s)):
+            for others in slices(s[split:], n-1):
+                yield [s[:split]] + others
 
+def star_positions(parts):
+    for i in range(len(parts)):
+        yield ["*" + s if i == j else s for j, s in enumerate(parts)]
 
+# print([x for x in slices("#STKPWHR", 1)])
+# # print([[pos for pos in star_positions(x)] for x in slices("#STKPWHR", 1)])
+# print([x for x in slices("#STKPWHR", 2)])
+# # print([[pos for pos in star_positions(x)] for x in slices("#STKPWHR", 2)])
+# print([x for x in slices("#STKPWHR", 3)])
+# # print([[pos for pos in star_positions(x)] for x in slices("#STKPWHR", 3)])
+# print([x for x in slices("S", 1)])
+# print([x for x in slices("S", 2)])
 
+def construct_stroke_2(target_chord, chord_dictionary, has_asterisk = False):
+    for num_parts in range(1, min(6, len(target_chord)+1)):
+        # When the target chord is made of `num_parts` definitions that are in the dictionary
+        for parts in slices(target_chord, num_parts):
+            if not has_asterisk:
+                if all(nth_half in chord_dictionary for nth_half in parts):
+                    return "".join(chord_dictionary[nth_half] for nth_half in parts)
+            else:
+                for starred_parts in star_positions(parts):
+                    if all(nth_half in chord_dictionary for nth_half in starred_parts):
+                        return "".join(chord_dictionary[nth_half] for nth_half in starred_parts)
 
-def lookup(strokes):
+    return ""
+
+def lookup(strokes, construct_stroke=construct_stroke):
 
     output_string= ""
 
@@ -810,11 +840,32 @@ def lookup(strokes):
         return entry_strokes[strokes[0]]["prefix"] + output_string + entry_strokes[strokes[0]]["suffix"]
     return output_string
 
-#lookup(("+KAPZ","KWROU"))
-#print(lookup(("+WA*U")))
-print(lookup(("KAPS", "STA*RTD")))
-#print(lookup(("KAPS", "STKHRA*RTD")))
-#print(lookup(("KAPS", "WA*TD")))
-#print(lookup(("KAPS", "WA*TD", "KWRAL")))
-#print(lookup(("KAPS", "WA*TD", "KWRAL", "PAL")))
+def test(x,construct_stroke=construct_stroke):
+    try:
+        return lookup(x, construct_stroke=construct_stroke)
+    except Exception as e:
+        return e
+
+
+print(("DIFFERENCES: ", {
+    x: results for x in [
+        ("+KAPZ","KWROU"),
+        ("+WA*U"),
+        ("KAPS", "STA*RTD"),
+        ("KWR", "A*"),
+        ("KAPS", "STKHRA*RTD"),
+        ("KAPS", "WA*TD"),
+        ("KAPS", "WA*TD", "KWRAL"),
+        ("KAPS", "WA*TD", "KWRAL", "PAL")] 
+        if (results := (test(x), test(x,  construct_stroke=construct_stroke_2)))
+        if str(results[0]) != str(results[1])
+        }))
+# print(lookup(("+KAPZ","KWROU")))
+# print(lookup(("+WA*U")))
+# print(lookup(("KAPS", "STA*RTD")))
+# print(lookup(("KWR", "A*")))
+# print(lookup(("KAPS", "STKHRA*RTD")))
+# print(lookup(("KAPS", "WA*TD")))
+# print(lookup(("KAPS", "WA*TD", "KWRAL")))
+# print(lookup(("KAPS", "WA*TD", "KWRAL", "PAL")))
 
