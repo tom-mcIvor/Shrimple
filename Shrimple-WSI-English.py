@@ -125,7 +125,7 @@ ender_letter={
     "*LG":"lk",
     "*T":"th",
     "*TD":"thed",
-    "*S":"st",
+    "*S":"s",
     "*SZ":"c",
     "*D":"[y]",
     "*Z":"z",
@@ -168,15 +168,16 @@ ender_letter={
     "GTS":"ghts",
 
     "T":"t",
+    "TS":"ts",
     "TD":"ted",
     "TZ":"",
 
     "S":"s", #might be some logic here for c? Realtime uses `SZ` for c
-    "SZ":"ss",
+    #"SZ":"ss",
 
     "D":"d",
 
-    "Z":"s",
+    "Z":"[s]",
 
 }
 
@@ -212,7 +213,9 @@ strokes_you_can_use_to_exit_shrimple_with=[
     "^*",
     "^S",
     "TKUPT",
-    
+    "STKHR",    #delete
+    "TKHR",     #backspace
+
     #navigation
     "STPH-R",
     "STPH-RB",
@@ -237,7 +240,6 @@ left_finger_chords_you_can_use_to_exit_shrimple_with={
 left_hand_chords_you_can_use_to_exit_shrimple_with={
 
 
-
 }
 
 
@@ -245,6 +247,7 @@ right_finger_chords_you_can_use_to_exit_shrimple_with={
 
     #Emily's stuff (might also have to do this for my phrasing too?)
     "LTZ"
+    "RLTZ"
 }
 
 left_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with=[
@@ -256,6 +259,7 @@ right_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with=[
 ]
 
 
+dedicated_key_you_can_use_during_the_final_stroke_to_exit_shrimple_with = "$"
 
 
 
@@ -747,7 +751,7 @@ def lookup(strokes, construct_stroke=construct_stroke):
                 raise KeyError
 
 
-            if ((match[1] in left_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with) or (match[4] in right_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with)) and not stroke_number+1 == len(strokes):
+            if ((match[1] in left_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with) or (match[4] in right_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with) or (dedicated_key_you_can_use_during_the_final_stroke_to_exit_shrimple_with in match[1])) and not stroke_number+1 == len(strokes):
                 futurematch = re.fullmatch(r'(#?\^?S?T?K?P?W?H?R?)(A?O?)(\*?\-?E?U?)(F?R?P?B?L?G?T?S?D?Z?)', strokes[stroke_number+1].replace(dedicated_key,""))
                 if not (futurematch[1] in left_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with or futurematch[4] in right_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with):
                     raise KeyError
@@ -812,12 +816,20 @@ def lookup(strokes, construct_stroke=construct_stroke):
 
         #now do stuff with like [e]:
         if '[e]' in middle_thing:
-            end_thing+="e"
+            end_thing+="[e]"
             middle_thing=middle_thing.replace("[e]","")
+
+        if '[e]' in end_thing:
+            end_thing+="e"
+            end_thing=end_thing.replace("[e]","")
 
         if '[y]' in end_thing:
             end_thing+="{^y}"
             end_thing=end_thing.replace("[y]","")
+
+        if '[s]' in end_thing:
+            end_thing+="{^s}"
+            end_thing=end_thing.replace("[s]","")
 
 
         if not stroke_number==0 or (dedicated_key in strokes[0]):
