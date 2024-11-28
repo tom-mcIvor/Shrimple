@@ -56,6 +56,7 @@ starter_letter={
 
     "K":"k",
     "KP":"x",
+    "KPW":"c", #now you can do crab/clue etc
     "KW":"q",
     "KWH":"y",
     "KWR":"",
@@ -124,8 +125,8 @@ ender_letter={
     "*BGD":"cked",
     "*LG":"lk",
     "*T":"th",
-    "*TD":"thed",
-    "*S":"s",
+    "*TD":"thed", #for past tense words
+    "*S":"c", 
     "*SZ":"c",
     "*D":"[y]",
     "*Z":"z",
