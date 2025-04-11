@@ -6,28 +6,28 @@ Key considerations were that it wasn't tailored for English, as this is mostly f
 entry_strokes={
     #just use this top one, rewrite to whatever you wanna use
 
-    "SHREUFRPL" : {"prefix":"",
-                   "suffix":""},
+    # "SHREUFRPL" : {"prefix":"",
+    #                "suffix":""},
 
-    "KWR*"      : {"prefix":"",
-                   "suffix":""},
+    # "KWR*"      : {"prefix":"",
+    #                "suffix":""},
 
-    "KWR"       : {"prefix":"{^}",
-                   "suffix":""},
+    # "KWR"       : {"prefix":"{^}",
+    #                "suffix":""},
 
-    "TPH*"      : {"prefix":"{-|}", #capitalise first letter
-                   "suffix":""},
+    # "TPH*"      : {"prefix":"{-|}", #capitalise first letter
+    #                "suffix":""},
 
-    "KAPS"      : {"prefix":"{mode:caps}", #capitalise everything
-                   "suffix":"{mode:reset}"}
+    # "KAPS"      : {"prefix":"{mode:caps}", #capitalise everything
+    #                "suffix":"{mode:reset}"}
 
 }
 
 #dedicated key settings:
-dedicated_key = '+'             #Instead of a starter stroke
+dedicated_key = '^'             #Instead of a starter stroke
 make_words_done_with_dedicated_key_exit_immediately = True
 joiner_strokes={ #If Shrimple automatically exits, maybe you wanna use KWR to stay in Shrimple
-    "left-hand joiner" : "^SKWR",
+    # "left-hand joiner" : "^SKWR",
     #"right-hand joiner" : "FPL"
 }
 
@@ -36,8 +36,9 @@ make_starter_letters_have_left_to_right_priority = True
 starter_letter={
     "" : "",
 
-    "^":"{^^}",
-
+    "Y" : "{#Space}",
+    "!" : "",
+    "Q" : "{:case:cap_first_word}",
     "S" : "s",
     "STK": "dis",
     "STKPW": "z",
@@ -58,8 +59,7 @@ starter_letter={
     "K":"k",
     "KP":"x",
     "KW":"q",
-    "KWH":"y",
-    "KWR":"",
+    "KWR":"y",
     "KH":"ch",
     "KR":"c",
 
@@ -73,14 +73,13 @@ starter_letter={
     "H":"h",
     "HR":"l",
 
-    "R":"r"
+    "R":"r",
 }
 
 
 
 vowels={
     "-":"",
-    
     "":"",
 
     "*A":"u",
@@ -118,7 +117,6 @@ make_ender_letters_have_left_to_right_priority = True
 ender_letter={
     "":"",
     #"*":"", #asterisk on its own is invalid
-
     "*FT":"st",
     "*FTD":"sted",
     "*PBG":"nk",
@@ -128,9 +126,9 @@ ender_letter={
     "*LG":"lk",
     "*T":"th",
     "*TD":"thed",
-    "*S":"c[e]",
+    "*S":"ce",
     "*SZ":"c",
-    "*D":"[y]",
+    "*D":"y",
     "*Z":"z",
 
     "F":"f",
@@ -142,7 +140,7 @@ ender_letter={
     "FRL":"ml",
     "FRBL":"mbl",
     "FP":"ch",
-    "FPL":"",
+    "FPL":"", 
     "FB":"v",
     "FT":"ft",
 
@@ -180,56 +178,167 @@ ender_letter={
 
     "D":"d",
 
-    "Z":"[s]",
+    "Z":"z"
+    
 
 }
 
 
 
 strokes_you_can_use_to_exit_shrimple_with=[
+    # "+",
+    # "A*",
+    # "PW*",
+    # "KR*",
+    # "TK*",
+    # "*E",
+    # "TP*",
+    # "TKPW*",
+    # "H*",
+    # "*EU",
+    # "SKWR*",
+    # "K*",
+    # "HR*",
+    # "PH*",
+    # "TPH*",
+    # "O*",
+    # "P*",
+    # "KW*",
+    # "R*",
+    # "S*",
+    # "T*",
+    # "*U",
+    # "SR*",
+    # "W*",
+    # "KP*",
+    # "KWR*",
+    # "STKPW*",
+    # "A*P",
+    # "PW*P",
+    # "KR*P",
+    # "TK*P",
+    # "*EP",
+    # "TP*P",
+    # "TKPW*P",
+    # "H*P",
+    # "*EUP",
+    # "SKWR*P",
+    # "K*P",
+    # "HR*P",
+    # "PH*P",
+    # "TPH*P",
+    # "O*P",
+    # "P*P",
+    # "KW*P",
+    # "R*P",
+    # "S*P",
+    # "T*P",
+    # "*UP",
+    # "SR*P",
+    # "W*P",
+    # "KP*P",
+    # "KWR*P",
+    # "STKPW*P",
+    # "#A*",
+    # "#PW*",
+    # "#KR*",
+    # "#TK*",
+    # "#*E",
+    # "#TP*",
+    # "#TKPW*",
+    # "#H*",
+    # "#*EU",
+    # "#SKWR*",
+    # "#K*",
+    # "#HR*",
+    # "#PH*",
+    # "#TPH*",
+    # "#O*",
+    # "#P*",
+    # "#KW*",
+    # "#R*",
+    # "#S*",
+    # "#T*",
+    # "#*U",
+    # "#SR*",
+    # "#W*",
+    # "#KP*",
+    # "#KWR*",
+    # "#STKPW*",
+    # "#A*P",
+    # "#PW*P",
+    # "#KR*P",
+    # "#TK*P",
+    # "#*EP",
+    # "#TP*P",
+    # "#TKPW*P",
+    # "#H*P",
+    # "#*EUP",
+    # "#SKWR*P",
+    # "#K*P",
+    # "#HR*P",
+    # "#PH*P",
+    # "#TPH*P",
+    # "#O*P",
+    # "#P*P",
+    # "#KW*P",
+    # "#R*P",
+    # "#S*P",
+    # "#T*P",
+    # "#*UP",
+    # "#SR*P",
+    # "#W*P",
+    # "#KP*P",
+    # "#KWR*P",
+    # "#STKPW*P",
+    # #punctuation
+    # "2",
+    # "#",
+    # "S",
+    # "T",
+    # "#1",
+    # "#T",
+    # "TK-LS",    #no space
+    # "S-P",      #space
+    # "KPA",      #caps
+    # "KPA*",     #caps no space
+    # "R-R",      #enter
+    # "TP-PL",    #.
+    # "TA*B",     #can't remember
+    # "TPWA*",    #left hand tab
+    # #"R*",       #left hand return
+    # "KW-PL",    #?
+    # "TP-BG",    #o
+    # "KW-BG",    #,
+    # "AEZ",      #'s
+    # "A*ES",     #s'
+    # "AES",      #'s
+    # "HAERB",    ##
+    # "KWRA*T",   #@
+    # "P-P",      #.
+    # "H-N",      #-
+    # "H*N",      #-
+    # "TPHO*FRL", #normal
+    # # "*",        #delete
+    # "PW*FP",    #control backspace
+    # "EFBG",     #escape
+    # "^*",
+    # "TKUPT",
+    # "STKHR",    #delete
+    # "TKHR",     #backspace
 
-    #punctuation
-    "TK-LS",    #no space
-    "S-P",      #space
-    "KPA",      #caps
-    "KPA*",     #caps no space
-    "R-R",      #enter
-    "TP-PL",    #.
-    "TA*B",     #can't remember
-    "TPWA*",    #left hand tab
-    #"R*",       #left hand return
-    "KW-PL",    #?
-    "TP-BG",    #o
-    "KW-BG",    #,
-    "AEZ",      #'s
-    "A*ES",     #s'
-    "AES",      #'s
-    "HAERB",    ##
-    "KWRA*T",   #@
-    "P-P",      #.
-    "H-N",      #-
-    "H*N",      #-
-    "TPHO*FRL", #normal
-    "*",        #delete
-    "PW*FP",    #control backspace
-    "EFBG",     #escape
-    "^*",
-    "^S",
-    "TKUPT",
-    "STKHR",    #delete
-    "TKHR",     #backspace
+    # #navigation
+    # "STPH-R",
+    # "STPH-RB",
+    # "STPH-P",
+    # "STPH-B",
+    # "STPH-BG",
+    # "STPH-G",
+    # "STPH-FR",
+    # "STPH-LG",
+    # "PW-FP",
 
-    #navigation
-    "STPH-R",
-    "STPH-RB",
-    "STPH-P",
-    "STPH-B",
-    "STPH-BG",
-    "STPH-G",
-    "STPH-FR",
-    "STPH-LG",
-    "PW-FP",
-    
+   
 ]
 
 left_finger_chords_you_can_use_to_exit_shrimple_with={
@@ -262,71 +371,7 @@ right_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with=[
 ]
 
 
-dedicated_key_you_can_use_during_the_final_stroke_to_exit_shrimple_with = "$"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+dedicated_key_you_can_use_during_the_final_stroke_to_exit_shrimple_with = "*"
 
 
 import re
@@ -420,7 +465,7 @@ def construct_stroke_2(target_chord, chord_dictionary, has_asterisk = False):
 
 def lookup(strokes, construct_stroke=construct_stroke_2):
 
-    output_string= ""
+    output_string= "{^}"
 
 
     for stroke_number, stroke in enumerate(strokes):
@@ -448,12 +493,10 @@ def lookup(strokes, construct_stroke=construct_stroke_2):
         if stroke==dedicated_key:
             raise KeyError
 
-
         if stroke in strokes_you_can_use_to_exit_shrimple_with:
             raise KeyError
 
-
-        match = re.fullmatch(r'(#?\^?S?T?K?P?W?H?R?)(A?O?)(\*?\-?E?U?)(F?R?P?B?L?G?T?S?D?Z?)', stroke.replace(dedicated_key,""))
+        match = re.fullmatch(r'(\^?#?!?%?Y?&?@?\+?X?Q?S?T?K?P?W?H?R?)(A?O?)(\*?\-?E?U?)(F?R?P?B?L?G?T?S?D?Z?)', stroke.replace(dedicated_key,""))
         if match:
 
             if match[1] in left_finger_chords_you_can_use_to_exit_shrimple_with:
@@ -465,7 +508,7 @@ def lookup(strokes, construct_stroke=construct_stroke_2):
 
 
             if ((match[1] in left_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with) or (match[4] in right_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with) or (dedicated_key_you_can_use_during_the_final_stroke_to_exit_shrimple_with in match[1])) and not stroke_number+1 == len(strokes):
-                futurematch = re.fullmatch(r'(#?\^?S?T?K?P?W?H?R?)(A?O?)(\*?\-?E?U?)(F?R?P?B?L?G?T?S?D?Z?)', strokes[stroke_number+1].replace(dedicated_key,""))
+                futurematch = re.fullmatch(r'(\^?#?!?%?Y?&?@?\+?X?Q?S?T?K?P?W?H?R?)(A?O?)(\*?\-?E?U?)(F?R?P?B?L?G?T?S?D?Z?)', strokes[stroke_number+1].replace(dedicated_key,""))
                 if not (futurematch[1] in left_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with or futurematch[4] in right_finger_chords_you_can_use_during_the_final_stroke_to_exit_shrimple_with):
                     raise KeyError
 
@@ -497,7 +540,7 @@ def lookup(strokes, construct_stroke=construct_stroke_2):
         #match the strokes
         match= re.fullmatch(
             #dissect the string to starter_letters, vowels and ender_letters
-            r'\+?(#?)(\^?S?T?K?P?W?H?R?)(A?O?\*?\-?E?U?)(F?R?P?B?L?G?T?S?D?Z?)',
+            r'\^?(#?)(!?Y?Q?\+?S?T?K?P?W?H?R?)(A?O?\*?\-?E?U?)(F?R?P?B?L?G?T?S?D?Z?)',
 
             #this string:
             aericks_denumberizer(strokes[stroke_number].replace(dedicated_key,"")))
@@ -563,7 +606,7 @@ def lookup(strokes, construct_stroke=construct_stroke_2):
                     middle_thing+
                     end_thing
                     )
-
+                   
 
     if strokes[0] in entry_strokes:
         return entry_strokes[strokes[0]]["prefix"] + output_string + entry_strokes[strokes[0]]["suffix"]
@@ -597,4 +640,3 @@ print(("DIFFERENCES: ", {
 # print(lookup(("KAPS", "WA*TD")))
 # print(lookup(("KAPS", "WA*TD", "KWRAL")))
 # print(lookup(("KAPS", "WA*TD", "KWRAL", "PAL")))
-
