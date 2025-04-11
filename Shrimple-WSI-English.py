@@ -4,22 +4,7 @@ Key considerations were that it wasn't tailored for English, as this is mostly f
 """
 
 entry_strokes={
-    #just use this top one, rewrite to whatever you wanna use
-
-    # "SHREUFRPL" : {"prefix":"",
-    #                "suffix":""},
-
-    # "KWR*"      : {"prefix":"",
-    #                "suffix":""},
-
-    # "KWR"       : {"prefix":"{^}",
-    #                "suffix":""},
-
-    # "TPH*"      : {"prefix":"{-|}", #capitalise first letter
-    #                "suffix":""},
-
-    # "KAPS"      : {"prefix":"{mode:caps}", #capitalise everything
-    #                "suffix":"{mode:reset}"}
+ 
 
 }
 
